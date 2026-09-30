@@ -1,0 +1,9 @@
+[package]
+name = "crawler"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+regex = "1.13.1"
+scraper = "0.27.0"
+ureq = "3.4.2"
