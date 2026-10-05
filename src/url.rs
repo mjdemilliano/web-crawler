@@ -1,7 +1,7 @@
 use regex::regex;
 use std::fmt::Display;
 
-#[derive(Clone, PartialOrd, Ord, Eq, Debug, PartialEq)]
+#[derive(Clone, PartialOrd, Ord, Eq, Debug, PartialEq, Hash)]
 pub struct URL {
     // Prefix: http[s]://blabla.blabla
     pub prefix: String,
@@ -41,6 +41,29 @@ impl Display for URL {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}{}", self.prefix, self.path)
     }
+}
+
+impl AsRef<URL> for URL {
+    fn as_ref(&self) -> &URL {
+        self
+    }
+}
+
+pub fn display_urls<I>(urls: I) -> String
+where
+    I: IntoIterator,
+    I::Item: AsRef<URL>,
+{
+    let mut result = String::new();
+    let mut items = urls.into_iter();
+    if let Some(url) = items.next() {
+        result.push_str(&url.as_ref().as_str());
+    }
+    while let Some(url) = items.next() {
+        result.push_str(", ");
+        result.push_str(&url.as_ref().as_str());
+    }
+    result
 }
 
 #[cfg(test)]
